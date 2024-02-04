@@ -1,0 +1,26 @@
+### Create car A
+POST http://localhost:8083/api/cars
+Content-Type: application/json
+
+{
+  "ownerId": 1,
+  "driverId": 1,
+  "brand": "Brand A",
+  "model": "Model A",
+  "classType": "A"
+}
+
+### Create car B
+POST http://localhost:8083/api/cars
+Content-Type: application/json
+
+{
+  "ownerId": 2,
+  "driverId": 2,
+  "brand": "Brand B",
+  "model": "Model B",
+  "classType": "B"
+}
+
+### Get cars
+GET http://localhost:8083/api/cars
