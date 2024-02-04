@@ -1,8 +1,11 @@
-package io.github.devclubspb.parking.service;
+package io.github.devclubspb.parking.service.support;
 
 import io.github.devclubspb.parking.domain.*;
 import io.github.devclubspb.parking.entity.CarEntity;
 import io.github.devclubspb.parking.repository.CarRepository;
+import io.github.devclubspb.parking.service.CarService;
+import io.github.devclubspb.parking.service.DriverEnrichmentService;
+import io.github.devclubspb.parking.service.OwnerEnrichmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

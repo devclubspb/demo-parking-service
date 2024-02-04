@@ -16,3 +16,6 @@ spring:
             url: ${COMPANY_BRANCH_SERVICE_URL}
           employee-service:
             url: ${EMPLOYEE_SERVICE_URL}
+
+application:
+  enrichment-mode: ${ENRICHMENT_MODE:multi}
