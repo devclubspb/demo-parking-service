@@ -1,7 +1,5 @@
 package io.github.devclubspb.parking.service;
 
-import io.github.devclubspb.parking.client.CompanyBranchClient;
-import io.github.devclubspb.parking.client.EmployeeClient;
 import io.github.devclubspb.parking.domain.*;
 import io.github.devclubspb.parking.entity.CarEntity;
 import io.github.devclubspb.parking.repository.CarRepository;
@@ -16,8 +14,8 @@ public class SimpleCarService implements CarService {
 
     private final CarRepository carRepository;
 
-    private final CompanyBranchClient branchClient;
-    private final EmployeeClient employeeClient;
+    private final OwnerEnrichmentService ownerEnrichmentService;
+    private final DriverEnrichmentService driverEnrichmentService;
 
     @Override
     public Car createCar(NewCar newCar) {
@@ -34,35 +32,25 @@ public class SimpleCarService implements CarService {
 
     @Override
     public List<Car> getAllCars() {
-        return carRepository.findAllSortedByModel().stream()
+        List<Car> cars = carRepository.findAllSortedByModel().stream()
                 .map(this::mapEntity2Domain)
                 .toList();
+        ownerEnrichmentService.enrichOwners(cars);
+        driverEnrichmentService.enrichDrivers(cars);
+        return cars;
     }
 
     private Car mapEntity2Domain(CarEntity entity) {
-        Owner owner = branchClient.getBranch(entity.getOwnerId())
-                .map(branch -> Owner.builder()
-                        .id(branch.getId())
-                        .name(branch.getName())
-                        .address(branch.getAddress())
-                        .build())
-                .orElseGet(() -> Owner.builder()
-                        .id(entity.getOwnerId())
-                        .name("Unknown")
-                        .build());
-        Driver driver = employeeClient.getEmployee(entity.getDriverId())
-                .map(branch -> Driver.builder()
-                        .id(branch.getId())
-                        .name(branch.getName())
-                        .build())
-                .orElseGet(() -> Driver.builder()
-                        .id(entity.getDriverId())
-                        .name("Unknown")
-                        .build());
         return Car.builder()
                 .id(entity.getId())
-                .owner(owner)
-                .driver(driver)
+                .owner(Owner.builder()
+                        .id(entity.getOwnerId())
+                        .name("Unknown")
+                        .build())
+                .driver(Driver.builder()
+                        .id(entity.getDriverId())
+                        .name("Unknown")
+                        .build())
                 .brand(entity.getBrand())
                 .model(entity.getModel())
                 .classType(CarClass.valueOf(entity.getClassType()))
