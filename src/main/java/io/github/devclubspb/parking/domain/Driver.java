@@ -9,15 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Car {
+public class Driver {
 
     private Long id;
-
-    private Owner owner;
-    private Driver driver;
-
-    private String brand;
-    private String model;
-    private CarClass classType;
+    private String name;
 
 }

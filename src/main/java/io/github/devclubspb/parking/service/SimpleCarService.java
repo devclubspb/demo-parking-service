@@ -1,8 +1,8 @@
 package io.github.devclubspb.parking.service;
 
-import io.github.devclubspb.parking.domain.Car;
-import io.github.devclubspb.parking.domain.CarClass;
-import io.github.devclubspb.parking.domain.NewCar;
+import io.github.devclubspb.parking.client.CompanyBranchClient;
+import io.github.devclubspb.parking.client.EmployeeClient;
+import io.github.devclubspb.parking.domain.*;
 import io.github.devclubspb.parking.entity.CarEntity;
 import io.github.devclubspb.parking.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,9 @@ import java.util.List;
 public class SimpleCarService implements CarService {
 
     private final CarRepository carRepository;
+
+    private final CompanyBranchClient branchClient;
+    private final EmployeeClient employeeClient;
 
     @Override
     public Car createCar(NewCar newCar) {
@@ -37,10 +40,29 @@ public class SimpleCarService implements CarService {
     }
 
     private Car mapEntity2Domain(CarEntity entity) {
+        Owner owner = branchClient.getBranch(entity.getOwnerId())
+                .map(branch -> Owner.builder()
+                        .id(branch.getId())
+                        .name(branch.getName())
+                        .address(branch.getAddress())
+                        .build())
+                .orElseGet(() -> Owner.builder()
+                        .id(entity.getOwnerId())
+                        .name("Unknown")
+                        .build());
+        Driver driver = employeeClient.getEmployee(entity.getDriverId())
+                .map(branch -> Driver.builder()
+                        .id(branch.getId())
+                        .name(branch.getName())
+                        .build())
+                .orElseGet(() -> Driver.builder()
+                        .id(entity.getDriverId())
+                        .name("Unknown")
+                        .build());
         return Car.builder()
                 .id(entity.getId())
-                .ownerId(entity.getOwnerId())
-                .driverId(entity.getDriverId())
+                .owner(owner)
+                .driver(driver)
                 .brand(entity.getBrand())
                 .model(entity.getModel())
                 .classType(CarClass.valueOf(entity.getClassType()))

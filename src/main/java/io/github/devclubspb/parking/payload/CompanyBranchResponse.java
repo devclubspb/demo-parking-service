@@ -9,16 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarResponse {
+public class CompanyBranchResponse {
 
     private Long id;
-
-    private String owner;
+    private String name;
     private String address;
-    private String driver;
-
-    private String brand;
-    private String model;
-    private String classType;
 
 }

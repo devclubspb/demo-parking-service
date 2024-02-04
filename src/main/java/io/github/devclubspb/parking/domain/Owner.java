@@ -1,4 +1,4 @@
-package io.github.devclubspb.parking.payload;
+package io.github.devclubspb.parking.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,16 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarResponse {
+public class Owner {
 
     private Long id;
-
-    private String owner;
+    private String name;
     private String address;
-    private String driver;
-
-    private String brand;
-    private String model;
-    private String classType;
 
 }

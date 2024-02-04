@@ -41,8 +41,9 @@ public class CarController {
     private CarResponse mapDomain2Response(Car domain) {
         return CarResponse.builder()
                 .id(domain.getId())
-                .ownerId(domain.getOwnerId())
-                .driverId(domain.getDriverId())
+                .owner(domain.getOwner().getName())
+                .address(domain.getOwner().getAddress())
+                .driver(domain.getDriver().getName())
                 .brand(domain.getBrand())
                 .model(domain.getModel())
                 .classType(domain.getClassType().name())

@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: ${PORT:8080}
 
 spring:
   application:
@@ -8,3 +8,11 @@ spring:
     url: jdbc:h2:mem:testdb
     username: user
     password: pass
+  cloud:
+    openfeign:
+      client:
+        config:
+          company-branch-service:
+            url: ${COMPANY_BRANCH_SERVICE_URL}
+          employee-service:
+            url: ${EMPLOYEE_SERVICE_URL}
